@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Flickr Gallery</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script type="text/javascript">
+		window.addEventListener('keydown',function(e){
+			if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){
+				if(e.target.nodeName=='INPUT'&&e.target.type=='text'){
+					e.preventDefault();return false;
+					}
+				}
+			},true);
+	</script>
+</head>
+
+<body>
+	<div id="wrapper">
+    
+		<div class="header">
+        <div>
+        	<h1>flickr gallery</h1>
+            <div class="search_bar">
+            	<form class="search_form" action="" method="post">
+   					<input id="keywords" type="text" v-model="query" debounce="500" placeholder="Enter your search keywords" /> 
+                </form>
+            </div>
+        </div>
+        </div>
+        
+		<div class="gallery">
+        	<div id="gallery_zero_results" v-show="images.length < 1"><p>Your results will appear here</p></div>
+            <div id="search-results">
+            
+            
+          		<div class="result-item" v-for="image in images">
+            		<div class="thumbnail" onclick="openFull(this)"><img src="img/loading.gif" style="width: 100%;" v-img="image.media.m"></div>
+                    <div class="full-size">
+                    	<div class="close-icon" onclick="closeFull(this)">[CLOSE]</div>
+                    	<div class="photo"><img src="img/loading.gif" v-img="image.media.m"></div>
+                        <div class="sidebar">
+                            <div class="title">{{ image.title }}</div>
+                            <div class="author">by <a :href="image.link" target="_blank">{{ image.author }}</a></div>
+                            <div class="date"><span>taken on <em>{{ image.date_taken  }}</em></span> <span>published on <em>{{ image.published }}</em></div>
+                            <div class="keywords" v-if="image.tags">
+                            	<p>Keywords:</p>
+                            	<div class="tag" v-for="tag in filters.splitTags(image.tags)">{{ tag }}</div>
+                        	</div>
+                    	</div>
+            		</div>
+          		</div>
+			</div>
+        </div>
+        
+		<div class="footer">
+        	Created by 
+            <a href="https://www.linkedin.com/in/darja-odincova-09546b115/">
+            	Darja Odincova
+            </a>
+        </div>
+	</div>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.0.3/vue-resource.min.js"></script>
+    <script type="text/javascript" src="js/flickr_search.js"></script>
+    <script type="text/javascript" src="js/full-size-toggle.js"></script>
+</body>
+</html>
